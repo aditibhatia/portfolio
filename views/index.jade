@@ -1,0 +1,42 @@
+doctype 5
+html
+	head
+		title Aditi Bhatia
+
+		link(href='/global.css?#{version}', rel='stylesheet', type='text/css')
+		link(href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.css', rel='stylesheet', type='text/css')
+
+		script window.global = {version: "#{version}", debug: !{devMode}}
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+		script(src="/socket.io/socket.io.js")
+		script(src="/app.js?#{version}")
+
+	body
+		.container
+			.jumbotron
+				h1 Aditi Bhatia
+
+			.row
+				.col-xs-12
+					ul.nav.nav-pills.nav-justified
+						li.active
+							a Portfolio
+						li
+							a Web
+						li
+							a Video
+						li
+							a Design
+						li
+							a Art
+
+			.row
+				.col-xs-8
+					#output
+					h2 Post a comment:
+					input#txtMessage(placeholder='Comment')
+					button#btnSend Post
+				.col-xs-4
+					h3 Posts:
+					#messages
+
