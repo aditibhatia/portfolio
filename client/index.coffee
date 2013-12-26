@@ -6,6 +6,7 @@ $ ->
 		console.log data
 
 		$projects = $('#projects')
+		$projects.empty()
 
 		for project in data.projects
 			$item = $('<div>').addClass('project all').addClass(project.type)
