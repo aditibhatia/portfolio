@@ -9,6 +9,7 @@ html
 
 		script window.global = {version: "#{version}", debug: !{devMode}}
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js")
 		script(src="/index.js?#{version}")
 
 	body
@@ -56,6 +57,7 @@ html
 			.row
 				.lineBlack
 
-			.row.content
-				.col-lg-1
+			#projects
+				.row
+					.grid-sizer.col-xs-12.col-sm-4.col-md-3.col-lg-2
 
