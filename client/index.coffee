@@ -15,5 +15,7 @@ $ ->
 			$projects.append $item
 
 	$('.filterButton').click (e) ->
-		filter = $(e.target).attr('x-filter')
-		$('.project').fadeOut().filter('.' + filter).fadeIn()
+		$button = $(e.target)
+		filter = $button.attr('x-filter')
+		$('.project').hide()
+		$('.project').filter(".#{filter}").fadeIn(600)
