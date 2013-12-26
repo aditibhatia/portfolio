@@ -1,3 +1,13 @@
+column-count(count)
+	column-count: count
+	-moz-column-count: count
+	-webkit-column-count: count
+
+column-gap(gap)
+	column-gap: gap
+	-moz-column-gap: gap
+	-webkit-column-gap: gap
+
 body .container
 	width: 100%
 
@@ -56,7 +66,26 @@ a:hover
 	visibility: hidden
 
 #projects
-	margin: auto
+	column-count 1
+	column-gap 10px
 
 #projects .project
 	padding-top: 30px
+	display: inline-block
+
+#projects .project img
+	width: 100%
+	margin: auto
+
+@media screen and (min-width:768px)
+	#projects
+		column-count: 2
+
+@media screen and (min-width:992px)
+	#projects
+		column-count: 3
+
+@media screen and (min-width:1200px)
+	#projects
+		column-count: 4
+
