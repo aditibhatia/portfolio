@@ -1,9 +1,27 @@
 msnry = false
 
+API_KEY = "AIzaSyBqmMVDizmBFhmiQwEblDkpEu-4nQAMHNY"
+TABLE = "1aj96ZD5RpRDWKlO4r2rmaWfabTK7efaUG4zrdMA"
+QUERY = encodeURIComponent "select * from #{TABLE}"
+TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql=#{QUERY}"
+
 $ ->
 
-	$.getJSON "/projects.json", (data) ->
-		console.log data
+	$.getJSON TABLE_URL, (data) ->
+		console.log "Data:", data
+		
+		numColumns = data.columns.length
+		projects = []
+
+		for row in data.rows
+			project = {}
+			c = 0
+			while c < numColumns
+				project[data.columns[c]] = row[c] unless not row[c]
+				c++
+			projects.push project
+
+		console.log "Projects:", projects
 
 		$projects = $('#projects')
 		$projects.empty()
