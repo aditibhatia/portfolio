@@ -26,11 +26,17 @@ $ ->
 		$projects = $('#projects')
 		$projects.empty()
 
-		for project in data.projects
-			$item = $('<div>').addClass('project all').addClass(project.type)
+		for project in projects
+			continue unless project.thumbnail
+			$project = $('<a>').addClass('project all').addClass(project.type)
 			$img = $('<img>').attr('src', project.thumbnail).addClass 'img-rounded img-responsive'
-			$item.append $img
-			$projects.append $item
+			$project.append $img
+			$projects.append $project
+			
+			$project.attr 'title', project.name
+			$project.attr 'href', project.image or project.externalLink
+
+			$project.fancybox()
 
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
