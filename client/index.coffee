@@ -31,8 +31,12 @@ $ ->
 			$project = $('<a>').addClass('project all').addClass(project.type)
 			$img = $('<img>').attr('src', project.thumbnail).addClass 'img-rounded img-responsive'
 			$project.append $img
-			$projects.append $project
-			
+			$img.hide()
+
+			$img.load (e) ->
+				$(this).parent().appendTo $projects
+				$(this).fadeIn()
+
 			$project.attr 'title', project.name
 			$project.attr 'href', project.image or project.externalLink
 
