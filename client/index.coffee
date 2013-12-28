@@ -41,6 +41,8 @@ $ ->
 
 			$project.attr 'title', project.name
 
+			fancyBoxOptions = {}
+
 			switch project.type
 
 				when 'design', 'art'
@@ -49,14 +51,14 @@ $ ->
 				when 'web'
 					$project.attr 'href', project.externalLink
 					$project.addClass 'fancybox.iframe'
+					fancyBoxOptions =
+						width: '100%'
 
 				when 'video'
 					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
 					$project.addClass 'fancybox.iframe'
 
-			$project.fancybox
-				iframe:
-					width: '100%'
+			$project.fancybox fancyBoxOptions
 
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
