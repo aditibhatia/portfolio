@@ -40,9 +40,23 @@ $ ->
 				$(this).fadeIn()
 
 			$project.attr 'title', project.name
-			$project.attr 'href', project.image or project.externalLink
 
-			$project.fancybox()
+			switch project.type
+
+				when 'design', 'art'
+					$project.attr 'href', project.image or thumbnails[0]
+
+				when 'web'
+					$project.attr 'href', project.externalLink
+					$project.addClass 'fancybox.iframe'
+
+				when 'video'
+					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
+					$project.addClass 'fancybox.iframe'
+
+			$project.fancybox
+				iframe:
+					width: '100%'
 
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
