@@ -6,6 +6,11 @@ TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql
 $ ->
 	$.fancybox.showLoading()
 
+$ ->
+	$(document).on 'click', 'a', (e) ->
+		if e.target.host isnt document.location.host
+			e.target.target = '_blank'
+
 
 	$.getJSON TABLE_URL, (data) ->
 
