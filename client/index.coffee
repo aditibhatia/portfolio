@@ -11,6 +11,10 @@ $ ->
 		if e.target.host isnt document.location.host
 			e.target.target = '_blank'
 
+$ ->
+
+	$('.navSection').not('#projects').hide()
+
 
 	$.getJSON TABLE_URL, (data) ->
 
@@ -76,6 +80,13 @@ $ ->
 		$('.filterButton').removeClass 'active'
 		$button.addClass 'active'
 
+	$('.navButton').click (e) ->
+		$button = $(e.target)
+		section = $button.attr('x-section')
+		$('.navButton').removeClass 'active'
+		$button.addClass 'active'
+		$('.navSection').hide()
+		$("##{section}").fadeIn()
 	$('.btnTop').click ->
 		$(document).scrollTop 0
 

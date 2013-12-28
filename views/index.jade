@@ -25,11 +25,11 @@ html
 
 				.col-sm-7
 					#nav
-						a Portfolio
+						a.navButton(x-section='projects').active Portfolio
 						span= '///'
-						a About
+						a.navButton(x-section='about') About
 						span= '///'
-						a Contact
+						a.navButton(x-section='contact') Contact
 
 
 			.row
@@ -56,7 +56,15 @@ html
 			.row
 				.lineBlack
 
-			#projects
+			.navSection#projects
+
+			.row
+				.col-lg-1
+				.col-xs-12.col-lg-10.navSection#about
+
+			.row
+				.col-lg-1
+				.col-xs-12.col-lg-10.navSection#contact
 
 			.row
 				.footer
