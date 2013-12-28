@@ -1,15 +1,18 @@
-msnry = false
-
 API_KEY = "AIzaSyBqmMVDizmBFhmiQwEblDkpEu-4nQAMHNY"
 TABLE = "1aj96ZD5RpRDWKlO4r2rmaWfabTK7efaUG4zrdMA"
 QUERY = encodeURIComponent "select * from #{TABLE}"
 TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql=#{QUERY}"
 
 $ ->
+	$.fancybox.showLoading()
+
 
 	$.getJSON TABLE_URL, (data) ->
+
+		$.fancybox.hideLoading()
+
 		console.log "Data:", data
-		
+
 		numColumns = data.columns.length
 		projects = []
 
