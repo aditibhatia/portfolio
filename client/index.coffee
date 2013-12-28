@@ -65,3 +65,5 @@ $ ->
 		filter = $button.attr('x-filter')
 		$('.project').hide()
 		$('.project').filter(".#{filter}").fadeIn(600)
+		$('.filterButton').removeClass 'active'
+		$button.addClass 'active'
