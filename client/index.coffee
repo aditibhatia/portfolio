@@ -28,8 +28,10 @@ $ ->
 
 		for project in projects
 			continue unless project.thumbnail
+			thumbnails = project.thumbnail.split ' '
+
 			$project = $('<a>').addClass('project all').addClass(project.type)
-			$img = $('<img>').attr('src', project.thumbnail).addClass 'img-rounded img-responsive'
+			$img = $('<img>').attr('src', thumbnails[0]).addClass 'img-rounded img-responsive'
 			$project.append $img
 			$img.hide()
 
