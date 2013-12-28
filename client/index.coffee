@@ -67,3 +67,7 @@ $ ->
 		$('.project').filter(".#{filter}").fadeIn(600)
 		$('.filterButton').removeClass 'active'
 		$button.addClass 'active'
+
+	$('.btnTop').click ->
+		$(document).scrollTop 0
+
