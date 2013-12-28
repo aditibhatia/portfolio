@@ -3,6 +3,8 @@ debug = process.env.NODE_ENV isnt 'production'
 
 util = require 'util'
 express = require 'express'
+pagedown = require 'pagedown'
+request = require 'request'
 fs = require 'fs'
 jade = require 'jade'
 stylus = require 'stylus'
@@ -51,6 +53,20 @@ app.get '/', (req, res) ->
 	res.render 'index.jade',
 		version: version
 		devMode: debug
+
+app.get '/md/:link', (req, res) ->
+	link = decodeURIComponent req.params.link
+	request link, (err, resp, body) ->
+		if not err and resp.statusCode is 200
+			safeConverter = pagedown.getSanitizingConverter()
+			html = safeConverter.makeHtml body
+		else
+			html = '<em>An unexpected error has occured.</em>'
+			console.error resp.statusCode, err
+
+		res.json
+			error: err
+			html: html or ''
 
 app.listen process.env.PORT or 0, ->
 	addr = app.address().address
