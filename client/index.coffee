@@ -54,14 +54,31 @@ $ ->
 			thumbnails = project.thumbnail.split ' '
 
 			$project = $('<a>').addClass('project all').addClass(project.type)
-			$img = $('<img>').attr('src', thumbnails[0]).addClass 'img-rounded img-responsive'
-			$project.append $img
-			$img.hide()
 
-			$img.load (e) ->
-				$(this).parent().appendTo $projects
-				$(this).fadeIn()
-				checkBtnTopOffset()
+			if thumbnails.length > 1
+				$carousel = $('<div>').addClass('carousel slide')
+				$carouselInner = $('<div>').addClass('carousel-inner')
+				$carousel.append $carouselInner
+				for thumbnail in thumbnails
+					$img = $('<img>').attr('src', thumbnail).addClass 'img-rounded img-responsive'
+					$item = $('<div>').addClass('item')
+					$carouselInner.append $item.append $img
+
+				$carouselInner.children().first().addClass 'active'
+				$projects.append $project.append $carousel
+				$carousel.carousel
+					interval: 3000
+
+			else
+				$img = $('<img>').attr('src', thumbnails[0]).addClass 'img-rounded img-responsive'
+				$project.append $img
+
+				$img.hide()
+
+				$img.load (e) ->
+					$(this).parent().appendTo $projects
+					$(this).fadeIn()
+					checkBtnTopOffset()
 
 			$project.attr 'title', project.name
 
