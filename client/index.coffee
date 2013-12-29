@@ -82,22 +82,12 @@ $ ->
 
 			$project.attr 'title', project.name
 
-			fancyBoxOptions = {}
-
-			switch project.type
-
-				when 'design', 'art'
-					$project.attr 'href', project.image or thumbnails[0]
-
-				when 'web'
-					$project.attr 'href', project.externalLink
-					$project.addClass 'fancybox.iframe'
-					fancyBoxOptions =
-						width: '100%'
-
-				when 'video'
-					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
-					$project.addClass 'fancybox.iframe'
+			fancyBoxOptions =
+				title: project.name
+				helpers:
+					title:
+						type: 'outside'
+						position: 'top'
 
 			if project.comment
 				fancyBoxOptions.afterLoad = ((comment) ->
@@ -107,7 +97,35 @@ $ ->
 						true
 				)(project.comment)
 
-			$project.fancybox fancyBoxOptions
+			switch project.type
+
+				when 'design', 'art'
+					images = project.image.split ' '
+					if images.length > 1
+						fancyBoxOptions.helpers ?= {}
+						fancyBoxOptions.helpers.thumbs =
+							width: 100
+							height: 100
+						$project.click ((images, fancyBoxOptions) ->
+							(e) ->
+								$.fancybox.open images, fancyBoxOptions
+								e.preventDefault()
+						)(images, fancyBoxOptions)
+					else
+						$project.attr 'href', images.shift()
+						$project.fancybox fancyBoxOptions
+
+				when 'web'
+					$project.attr 'href', project.externalLink
+					$project.addClass 'fancybox.iframe'
+					fancyBoxOptions.width = '100%'
+					$project.fancybox fancyBoxOptions
+
+				when 'video'
+					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
+					$project.addClass 'fancybox.iframe'
+					$project.fancybox fancyBoxOptions
+
 
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
