@@ -101,13 +101,22 @@ $ ->
 		$button.addClass 'active'
 		checkBtnTopOffset()
 
-	$('.navButton').click (e) ->
+	$('.navButton#btnPortfolio').click (e) ->
+		$('.navSection').not('#projects').slideUp()
+		$('.navButton').removeClass('active')
+		$(e.target).addClass('active')
+		checkBtnTopOffset()
+
+	$('.navButton').not('#btnPortfolio').click (e) ->
 		$button = $(e.target)
 		section = $button.attr('x-section')
-		$('.navButton').removeClass 'active'
-		$button.addClass 'active'
-		$('.navSection').hide()
-		$("##{section}").fadeIn()
+		$section = $("##{section}")
+		if $section.is(":visible")
+			$section.slideUp()
+			$button.removeClass('active')
+		else
+			$section.slideDown()
+			$button.addClass('active')
 		checkBtnTopOffset()
 
 	$('.btnTop').click ->
