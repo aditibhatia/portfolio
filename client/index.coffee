@@ -17,6 +17,7 @@ $ ->
 $ ->
 
 	$('.navSection').not('#projects').hide()
+	$('.btnTop').hide()
 
 	$.getJSON '/md/' + encodeURIComponent(ABOUT_URL), (data) ->
 		console.log data
@@ -60,6 +61,7 @@ $ ->
 			$img.load (e) ->
 				$(this).parent().appendTo $projects
 				$(this).fadeIn()
+				checkBtnTopOffset()
 
 			$project.attr 'title', project.name
 
@@ -89,6 +91,7 @@ $ ->
 		$('.project').filter(".#{filter}").fadeIn(600)
 		$('.filterButton').removeClass 'active'
 		$button.addClass 'active'
+		checkBtnTopOffset()
 
 	$('.navButton').click (e) ->
 		$button = $(e.target)
@@ -97,7 +100,14 @@ $ ->
 		$button.addClass 'active'
 		$('.navSection').hide()
 		$("##{section}").fadeIn()
+		checkBtnTopOffset()
 
 	$('.btnTop').click ->
 		$(document).scrollTop 0
+
+	checkBtnTopOffset = ->
+		if $(window).height() > $('.footer').offset().top
+			$('.btnTop').hide()
+		else
+			$('.btnTop').show()
 
