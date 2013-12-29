@@ -103,8 +103,7 @@ $ ->
 
 	$('.navButton#btnPortfolio').click (e) ->
 		$('.navSection').not('#projects').slideUp()
-		$('.navButton').removeClass('active')
-		$(e.target).addClass('active')
+		$('.navButton').not('#btnPortfolio').removeClass('active')
 		checkBtnTopOffset()
 
 	$('.navButton').not('#btnPortfolio').click (e) ->
@@ -115,6 +114,8 @@ $ ->
 			$section.slideUp()
 			$button.removeClass('active')
 		else
+			$('.navSection').not('#projects').slideUp()
+			$('.navButton').not('#btnPortfolio').removeClass('active')
 			$section.slideDown()
 			$button.addClass('active')
 		checkBtnTopOffset()
