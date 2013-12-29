@@ -82,6 +82,14 @@ $ ->
 					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
 					$project.addClass 'fancybox.iframe'
 
+			if project.comment
+				fancyBoxOptions.afterLoad = ((comment) ->
+					->
+						$comment = $('<div>').addClass('comment').html(comment)
+						this.outer.append $comment
+						true
+				)(project.comment)
+
 			$project.fancybox fancyBoxOptions
 
 	$('.filterButton').click (e) ->
