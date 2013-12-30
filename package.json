@@ -12,6 +12,8 @@
   "dependencies": {
     "pagedown": "~1.1",
     "request": "~2.30",
+    "promise": "~3.2",
+    "memory-cache": "0.0.5",
     "colors": "~0.6",
     "gitsha": "~0.0",
     "git-pull": "~0.1",

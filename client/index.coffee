@@ -3,9 +3,6 @@ TABLE = "1aj96ZD5RpRDWKlO4r2rmaWfabTK7efaUG4zrdMA"
 QUERY = encodeURIComponent "select * from #{TABLE}"
 TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql=#{QUERY}"
 
-ABOUT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/about.md"
-CONTACT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/contact.md"
-
 $ ->
 	$.fancybox.showLoading()
 
@@ -18,14 +15,6 @@ $ ->
 
 	$('.navSection').not('#projects').hide()
 	$('.btnTop').hide()
-
-	$.getJSON '/md/' + encodeURIComponent(ABOUT_URL), (data) ->
-		console.log data
-		$('#about').html data.html
-
-	$.getJSON '/md/' + encodeURIComponent(CONTACT_URL), (data) ->
-		console.log data
-		$('#contact').html data.html
 
 	$.getJSON TABLE_URL, (data) ->
 

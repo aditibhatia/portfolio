@@ -5,11 +5,16 @@ util = require 'util'
 express = require 'express'
 pagedown = require 'pagedown'
 request = require 'request'
+Promise = require 'promise'
+cache = require 'memory-cache'
 fs = require 'fs'
 jade = require 'jade'
 stylus = require 'stylus'
 coffeescript = require 'connect-coffee-script'
 require 'colors'
+
+ABOUT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/about.md"
+CONTACT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/contact.md"
 
 version = "unknown"
 gitsha = require 'gitsha'
@@ -50,23 +55,32 @@ app.configure ->
 	app.use express.static __dirname + '/public'
 
 app.get '/', (req, res) ->
-	res.render 'index.jade',
-		version: version
-		devMode: debug
+	promise = Promise.all getHtml(ABOUT_URL), getHtml(CONTACT_URL)
+	promise.then (values) ->
+		res.render 'index.jade',
+			version: version
+			devMode: debug
+			content:
+				about: values[0]
+				contact: values[1]
 
-app.get '/md/:link', (req, res) ->
-	link = decodeURIComponent req.params.link
-	request link, (err, resp, body) ->
-		if not err and resp.statusCode is 200
-			safeConverter = pagedown.getSanitizingConverter()
-			html = safeConverter.makeHtml body
-		else
-			html = '<em>An unexpected error has occured.</em>'
-			console.error resp.statusCode, err
+getHtml = (url) ->
+	promise = Promise (resolve, reject) ->
+		if cache.get url
+			return resolve cache.get url
 
-		res.json
-			error: err
-			html: html or ''
+		util.log "Cache miss. Fetching: #{url}"
+		request url, (err, resp, body) ->
+			if not err and resp.statusCode is 200
+				safeConverter = pagedown.getSanitizingConverter()
+				html = safeConverter.makeHtml body
+				util.log resp.headers['status'] + " - " + resp.headers['etag']
+				cache.put url, html, 86400000
+			else
+				html = '<em>An unexpected error has occured.</em>'
+				console.error "HTTP #{resp.statusCode}, Error:", err
+				cache.put url, html, 10000
+			resolve(html)
 
 app.listen process.env.PORT or 0, ->
 	addr = app.address().address
