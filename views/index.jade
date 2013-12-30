@@ -7,7 +7,7 @@ html
 		link(href='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css', rel='stylesheet', type='text/css')
 		link(href='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-thumbs.css', rel='stylesheet', type='text/css')
 		link(href='/global.css?#{version}', rel='stylesheet', type='text/css')
-		link(rel="icon" href="/img/icon.png")
+		link(rel='icon' href="/img/icon.png")
 
 		script window.global = {version: "#{version}", debug: !{devMode}}
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
@@ -24,15 +24,15 @@ html
 
 				.col-sm-3
 					#logo
-						img.logo(src="/img/logo.png" alt="aditi bhatia")
+						img.logo(src='/img/logo.png' alt="aditi bhatia")
 
 				.col-sm-7
 					#nav
-						a.navButton(x-section='projects').active#btnPortfolio Portfolio
+						a.navButton(data-section='projects').active#btnPortfolio Portfolio
 						span= '///'
-						a.navButton(x-section='about') About
+						a.navButton(data-section='about') About
 						span= '///'
-						a.navButton(x-section='contact') Contact
+						a.navButton(data-section='contact') Contact
 
 			.row
 				.line
@@ -41,19 +41,19 @@ html
 				.col-sm-1
 
 				.col-sm-2.col-xs-12
-					a.filterButton.active(x-filter='all') All Work
+					a.filterButton.active(data-filter='all') All Work
 
 				.col-sm-2.col-xs-3
-					a.filterButton(x-filter='web') Web
+					a.filterButton(data-filter='web') Web
 
 				.col-sm-2.col-xs-3
-					a.filterButton(x-filter='video') Video
+					a.filterButton(data-filter='video') Video
 
 				.col-sm-2.col-xs-3
-					a.filterButton(x-filter='design') Design
+					a.filterButton(data-filter='design') Design
 
 				.col-sm-2.col-xs-3
-					a.filterButton(x-filter='art') Art
+					a.filterButton(data-filter='art') Art
 
 			.row
 				.lineBlack

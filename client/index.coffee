@@ -10,6 +10,7 @@ $ ->
 	$(document).on 'click', 'a', (e) ->
 		if e.target.host isnt document.location.host
 			e.target.target = '_blank'
+		true
 
 $ ->
 
@@ -118,23 +119,27 @@ $ ->
 					$project.addClass 'fancybox.iframe'
 					$project.fancybox fancyBoxOptions
 
+		checkBtnTopOffset()
+		true
 
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
-		filter = $button.attr('x-filter')
+		filter = $button.data().filter
 		layout(filter)
 		$('.filterButton').removeClass 'active'
 		$button.addClass 'active'
 		checkBtnTopOffset()
+		true
 
 	$('.navButton#btnPortfolio').click (e) ->
 		$('.navSection').not('#projects').slideUp()
 		$('.navButton').not('#btnPortfolio').removeClass('active')
 		checkBtnTopOffset()
+		true
 
 	$('.navButton').not('#btnPortfolio').click (e) ->
 		$button = $(e.target)
-		section = $button.attr('x-section')
+		section = $button.data().section
 		$section = $("##{section}")
 		if $section.is(":visible")
 			$section.slideUp()
@@ -145,9 +150,11 @@ $ ->
 			$section.slideDown()
 			$button.addClass('active')
 		checkBtnTopOffset()
+		true
 
 	$('.btnTop').click ->
 		$(document).scrollTop 0
+		true
 
 	checkBtnTopOffset = ->
 		if $(window).height() > $('.footer').offset().top
