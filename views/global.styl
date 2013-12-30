@@ -83,12 +83,8 @@ a:hover
 #mainNav a.active
 	color: #1da6b6
 
-.grid-sizer
+.gridSizer
 	visibility: hidden
-
-#projects
-	column-count 1
-	column-gap 10px
 
 #projects .project
 	padding-top: 30px
@@ -98,17 +94,6 @@ a:hover
 	width: 100%
 	margin: auto
 
-@media screen and (min-width:768px)
-	#projects
-		column-count: 2
-
-@media screen and (min-width:992px)
-	#projects
-		column-count: 3
-
-@media screen and (min-width:1200px)
-	#projects
-		column-count: 4
 .fancybox-title
 	text-align: center
 	font-weight: bold
@@ -120,6 +105,7 @@ a:hover
 	padding: 5px 0 0 0
 
 .footer
+	clear: both
 	margin: auto
 	font-size: 1.4em
 	text-align: center

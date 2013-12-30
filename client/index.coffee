@@ -43,6 +43,8 @@ $ ->
 			thumbnails = project.thumbnail.split ' '
 
 			$project = $('<a>').addClass('project all').addClass(project.type)
+			$project.data
+				id: project.id
 
 			if thumbnails.length > 1
 				$carousel = $('<div>').addClass('carousel slide')
@@ -68,6 +70,7 @@ $ ->
 					$(this).parent().appendTo $projects
 					$(this).fadeIn()
 					checkBtnTopOffset()
+					layout()
 
 			$project.attr 'title', project.name
 
@@ -119,8 +122,7 @@ $ ->
 	$('.filterButton').click (e) ->
 		$button = $(e.target)
 		filter = $button.attr('x-filter')
-		$('.project').hide()
-		$('.project').filter(".#{filter}").fadeIn(600)
+		layout(filter)
 		$('.filterButton').removeClass 'active'
 		$button.addClass 'active'
 		checkBtnTopOffset()
@@ -152,4 +154,42 @@ $ ->
 			$('.btnTop').hide()
 		else
 			$('.btnTop').show()
+
+	$gridSizer = $('.gridSizer')
+	currentColumns = Math.floor(window.innerWidth / $gridSizer.width())
+	currentWidth = window.innerWidth
+	$(window).resize (e) ->
+		return if window.innerWidth is currentWidth
+		currentWidth = window.innerWidth
+		columns = Math.floor(window.innerWidth / $gridSizer.width())
+		if currentColumns isnt columns
+			currentColumns = columns
+			layout()
+
+	$projects = $('#projects')
+	currentFilter = 'all'
+	layout = (filter = currentFilter) ->
+
+		console.log currentColumns, currentFilter
+		currentFilter = filter
+
+		$projectArr = $('.project').detach()
+		$projectsToDisplay = $projectArr.filter(".#{filter}").sort (a, b) -> +$(a).data().id > +$(b).data().id
+		$('#hidden').append $projectArr.not($projectsToDisplay)
+		$('#projects').empty()
+		i = 0
+		columns = []
+		while i < currentColumns
+			$col = $('<div>').addClass('col-xs-12 col-sm-6 col-md-4 col-lg-3')
+			$('#projects').append $col
+			columns[i++] = $col
+
+		$projectsToDisplay.each (index, $project) ->
+			$shortestColumn = columns[0]
+			for $column in columns
+				if $shortestColumn.height() > $column.height()
+					$shortestColumn = $column
+			$shortestColumn.append $project
+
+		true
 
