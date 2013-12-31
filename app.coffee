@@ -60,6 +60,7 @@ app.get '/', (req, res) ->
 		res.render 'index.jade',
 			version: version
 			devMode: debug
+			analyticsId: process.env.ANALYTICS_ID or 'UA-46698987-2'
 			content:
 				about: values[0]
 				contact: values[1]
