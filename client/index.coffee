@@ -200,3 +200,11 @@ $ ->
 
 		true
 
+	$('.logo').click ->
+		layout('all')
+		$('.filterButton').removeClass 'active'
+		$('.filterButton').first().addClass 'active'
+		$('.navSection').not('#projects').slideUp()
+		$('.navButton').not('#btnPortfolio').removeClass('active')
+		checkBtnTopOffset()
+		true
