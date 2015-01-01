@@ -28,49 +28,58 @@ html
 
 				.col-sm-7
 					#nav
-						a.navButton(data-section='projects').active#btnPortfolio Portfolio
+						a.navButton(data-section='home').active HOME
 						span= '///'
-						a.navButton(data-section='about') About
+						a.navButton(data-section='portfolio') PORTFOLIO
 						span= '///'
-						a.navButton(data-section='contact') Contact
+						a.navButton(data-section='about') ABOUT
+						span= '///'
+						a.navButton(data-section='contact') CONTACT
 
 			.row
 				.line
-
-			.row#mainNav
-				.col-sm-1
-
-				.col-sm-2.col-xs-12
-					a.filterButton.active(data-filter='all') All Work
-
-				.col-sm-2.col-xs-3
-					a.filterButton(data-filter='web') Web
-
-				.col-sm-2.col-xs-3
-					a.filterButton(data-filter='video') Video
-
-				.col-sm-2.col-xs-3
-					a.filterButton(data-filter='design') Design
-
-				.col-sm-2.col-xs-3
-					a.filterButton(data-filter='art') Art
-
-			.row
 				.lineBlack
-				.gridSizer.col-xs-12.col-sm-6.col-md-4.col-lg-3
 
 			noscript.row
 				h2 JavaScript is required to view the portfolio.
 
-			.row
+			.row.navSection#home
 				.col-lg-1
-				.col-xs-12.col-lg-10.navSection#about !{content.about}
+				.col-xs-12.col-lg-10 !{content.home}
+
+			.row.navSection#about
+				.col-lg-1
+				.col-xs-12.col-lg-10 !{content.about}
+
+			.row.navSection#contact
+				.col-lg-1
+				.col-xs-12.col-lg-10 !{content.contact}			
+
+			.navSection#portfolio
+				.row#mainNav
+					.col-sm-1
+
+					.col-sm-2.col-xs-12
+						a.filterButton.active(data-filter='all') All Work
+
+					.col-sm-2.col-xs-3
+						a.filterButton(data-filter='web') Web
+
+					.col-sm-2.col-xs-3
+						a.filterButton(data-filter='video') Video
+
+					.col-sm-2.col-xs-3
+						a.filterButton(data-filter='design') Design
+
+					.col-sm-2.col-xs-3
+						a.filterButton(data-filter='art') Art
+
+				.row.lineBlack
+
+				.row#projects
 
 			.row
-				.col-lg-1
-				.col-xs-12.col-lg-10.navSection#contact !{content.contact}
-
-			.navSection#projects
+				.gridSizer.col-xs-12.col-sm-6.col-md-4.col-lg-3
 
 			#hidden(style="display:none;")
 

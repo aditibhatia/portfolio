@@ -13,6 +13,7 @@ stylus = require 'stylus'
 coffeescript = require 'connect-coffee-script'
 require 'colors'
 
+HOME_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/home.md"
 ABOUT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/about.md"
 CONTACT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/contact.md"
 
@@ -55,15 +56,16 @@ app.configure ->
 	app.use express.static __dirname + '/public'
 
 app.get '/', (req, res) ->
-	promise = Promise.all getHtml(ABOUT_URL), getHtml(CONTACT_URL)
+	promise = Promise.all getHtml(HOME_URL), getHtml(ABOUT_URL), getHtml(CONTACT_URL)
 	promise.then (values) ->
 		res.render 'index.jade',
 			version: version
 			devMode: debug
 			analyticsId: process.env.ANALYTICS_ID or 'UA-46698987-2'
 			content:
-				about: values[0]
-				contact: values[1]
+				home: values[0]
+				about: values[1]
+				contact: values[2]
 
 getHtml = (url) ->
 	promise = Promise (resolve, reject) ->

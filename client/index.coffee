@@ -4,9 +4,6 @@ QUERY = encodeURIComponent "select * from #{TABLE}"
 TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql=#{QUERY}"
 
 $ ->
-	$.fancybox.showLoading()
-
-$ ->
 	$(document).on 'click', 'a', (e) ->
 		if e.target.host isnt document.location.host
 			e.target.target = '_blank'
@@ -14,12 +11,11 @@ $ ->
 
 $ ->
 
-	$('.navSection').not('#projects').hide()
+	$('.navSection').not('#home').hide()
+
 	$('.btnTop').hide()
 
 	$.getJSON TABLE_URL, (data) ->
-
-		$.fancybox.hideLoading()
 
 		console.log "Data:", data
 
@@ -131,25 +127,20 @@ $ ->
 		checkBtnTopOffset()
 		true
 
-	$('.navButton#btnPortfolio').click (e) ->
-		$('.navSection').not('#projects').slideUp()
-		$('.navButton').not('#btnPortfolio').removeClass('active')
-		checkBtnTopOffset()
-		true
-
-	$('.navButton').not('#btnPortfolio').click (e) ->
+	$('.navButton').click (e) ->
 		$button = $(e.target)
 		section = $button.data().section
-		$section = $("##{section}")
-		if $section.is(":visible")
-			$section.slideUp()
-			$button.removeClass('active')
-		else
-			$('.navSection').not('#projects').slideUp()
-			$('.navButton').not('#btnPortfolio').removeClass('active')
-			$section.slideDown()
-			$button.addClass('active')
+		$section = $(".navSection##{section}")
+		$('.navSection').not($section).slideUp()
+		$('.navButton').not($button).removeClass('active')
+		$section.slideDown()
+		$button.addClass('active')
+
 		checkBtnTopOffset()
+
+		if section is 'portfolio'
+			layout()
+
 		true
 
 	$('.btnTop').click ->
