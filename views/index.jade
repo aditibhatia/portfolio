@@ -9,6 +9,8 @@ html
 		link(href='/global.css?#{version}', rel='stylesheet', type='text/css')
 		link(rel='icon' href="/img/icon.png")
 
+		link(href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css')
+
 		script window.global = {version: "#{version}", debug: !{devMode}, analyticsId: "#{analyticsId}"}
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 		script(src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js")
@@ -23,17 +25,18 @@ html
 			.row.header
 				.col-sm-1
 
-				.col-sm-3
-					img.logo(src='/img/logo.png' alt="aditi bhatia")
+				.col-sm-3.logo
+					#title1 Aditi
+					#title2 Bhatia
 
 				.col-sm-7
 					#nav
 						a.navButton(data-section='home').active HOME
-						span= '///'
+						span= '|'
 						a.navButton(data-section='portfolio') PORTFOLIO
-						span= '///'
+						span= '|'
 						a.navButton(data-section='about') ABOUT
-						span= '///'
+						span= '|'
 						a.navButton(data-section='contact') CONTACT
 
 			.row
@@ -60,19 +63,16 @@ html
 					.col-sm-1
 
 					.col-sm-2.col-xs-12
-						a.filterButton.active(data-filter='all') All Work
+						a.filterButton.active(data-filter='all') everything
 
 					.col-sm-2.col-xs-3
-						a.filterButton(data-filter='web') Web
+						a.filterButton(data-filter='web') web
 
 					.col-sm-2.col-xs-3
-						a.filterButton(data-filter='video') Video
+						a.filterButton(data-filter='video') video
 
 					.col-sm-2.col-xs-3
-						a.filterButton(data-filter='design') Design
-
-					.col-sm-2.col-xs-3
-						a.filterButton(data-filter='art') Art
+						a.filterButton(data-filter='design') design
 
 				.row.lineBlack
 
@@ -89,4 +89,3 @@ html
 
 			.row
 				.credit Copyright &copy; 2013 Aditi Bhatia. All rights reserved.
-
