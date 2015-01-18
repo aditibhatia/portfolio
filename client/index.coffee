@@ -131,10 +131,12 @@ $ ->
 		$button = $(this)
 		section = $button.data().section
 		$section = $(".navSection##{section}")
+
 		$('.navSection').not($section).slideUp(checkBtnTopOffset)
-		$('.navButton').not($button).removeClass('active')
-		$button.addClass('active')
 		$section.slideDown(checkBtnTopOffset)
+
+		$('.navButton').not($button).removeClass('active')
+		$("#nav a[data-section='#{section}']").addClass('active')
 
 		if section is 'portfolio'
 			layout()
