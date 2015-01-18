@@ -111,7 +111,7 @@ $ ->
 					$project.fancybox fancyBoxOptions
 
 				when 'video'
-					$project.attr 'href', "http://www.youtube.com/embed/#{project.video}?autoplay=1"
+					$project.attr 'href', "//www.youtube.com/embed/#{project.video}?autoplay=1"
 					$project.addClass 'fancybox.iframe'
 					$project.fancybox fancyBoxOptions
 
