@@ -131,12 +131,10 @@ $ ->
 		$button = $(this)
 		section = $button.data().section
 		$section = $(".navSection##{section}")
-		$('.navSection').not($section).slideUp()
+		$('.navSection').not($section).slideUp(checkBtnTopOffset)
 		$('.navButton').not($button).removeClass('active')
-		$section.slideDown()
 		$button.addClass('active')
-
-		checkBtnTopOffset()
+		$section.slideDown(checkBtnTopOffset)
 
 		if section is 'portfolio'
 			layout()
@@ -188,6 +186,8 @@ $ ->
 				if $shortestColumn.height() > $column.height()
 					$shortestColumn = $column
 			$shortestColumn.append $project
+
+		checkBtnTopOffset()
 
 		true
 
