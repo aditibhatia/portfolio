@@ -28,15 +28,6 @@ app = express.createServer()
 app.set 'views', __dirname + '/views'
 app.set 'view options', layout: false
 
-accessLogStream = fs.createWriteStream './access.log',
-	flags: 'a'
-	encoding: 'utf8'
-	mode: 0o0644
-
-app.use express.logger
-	format: if debug then 'dev' else 'default'
-	stream: accessLogStream
-
 app.configure 'production', ->
 	app.use (req, res, next) ->
 		if not res.getHeader 'Cache-Control'
@@ -102,4 +93,3 @@ process.on 'SIGTERM', ->
 	setTimeout((-> process.exit(128+15)), 1000)
 
 module.exports = app
-
