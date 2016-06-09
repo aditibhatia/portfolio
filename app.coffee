@@ -90,5 +90,16 @@ app.listen process.env.PORT or 0, ->
 	port = app.address().port
 	util.log "[#{process.pid}] http://#{addr}:#{port}/"
 
+exit = (signal) ->
+	util.log "[#{process.pid}] Caught #{signal}; closing server connections."
+	app.close()
+
+process.on 'SIGINT', ->
+	exit('SIGINT')
+
+process.on 'SIGTERM', ->
+	exit('SIGTERM')
+	setTimeout((-> process.exit(128+15)), 1000)
+
 module.exports = app
 

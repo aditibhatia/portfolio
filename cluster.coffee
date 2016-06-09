@@ -13,7 +13,7 @@ util.log "#{pkg.name} (#{pkg.version}) - #{pkg.description}".green.bold
 numCPUs = require('os').cpus().length
 forkCount = 0
 forkTokenCount = numCPUs
-setInterval (-> forkTokenCount++ unless forkTokenCount >= numCPUs * 2), 1200000
+intervalObject = setInterval (-> forkTokenCount++ unless forkTokenCount >= numCPUs * 2), 1200000
 
 cluster.fork() for i in [0...numCPUs]
 
@@ -21,8 +21,8 @@ cluster.on 'fork', -> forkCount++
 
 cluster.on 'exit', (worker, code, signal) ->
 	forkCount--
-	if worker.suicide
-		util.log "Worker killed: pid: #{worker.process.pid}, code #{code}, signal #{signal}"
+	if worker.exitedAfterDisconnect
+		util.log "Worker disconnected: pid: #{worker.process.pid}, code #{code}, signal #{signal}"
 	else
 		util.log "Worker died: pid: #{worker.process.pid}, code #{code}, signal #{signal}".red
 		if forkTokenCount > 0
@@ -66,3 +66,17 @@ controller.listen process.env.CONTROLLER_PORT or 0, ->
 	port = controller.address().port
 	util.log "[#{process.pid}] Controller: http://#{addr}:#{port}/"
 
+exit = (signal) ->
+	util.log "[#{process.pid}] Caught #{signal}"
+	controller.close()
+	util.log "[#{process.pid}] Closing server connections."
+	cluster.disconnect()
+	util.log "[#{process.pid}] Disconnecting child processes."
+	clearInterval intervalObject
+
+process.on 'SIGINT', ->
+	exit('SIGINT')
+
+process.on 'SIGTERM', ->
+	exit('SIGTERM')
+	setTimeout((-> process.exit(128+15)), 1000)
