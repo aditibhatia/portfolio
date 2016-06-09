@@ -76,7 +76,8 @@ exit = (signal) ->
 
 process.on 'SIGINT', ->
 	exit('SIGINT')
+	setTimeout((-> process.exit(128+2)), 1000)
 
 process.on 'SIGTERM', ->
 	exit('SIGTERM')
-	setTimeout((-> process.exit(128+15)), 1000)
+	setTimeout((-> process.exit(128+15)), 500)
