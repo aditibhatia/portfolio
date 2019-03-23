@@ -1,88 +1,94 @@
 process.env.NODE_ENV ?= 'dev'
 debug = process.env.NODE_ENV isnt 'production'
 
-util = require 'util'
+chalk = require 'chalk'
 express = require 'express'
 pagedown = require 'pagedown'
 request = require 'request'
-Promise = require 'promise'
 cache = require 'memory-cache'
 fs = require 'fs'
-jade = require 'jade'
 stylus = require 'stylus'
-coffeescript = require 'connect-coffee-script'
-require 'colors'
+favicon = require 'serve-favicon'
+morgan = require 'morgan'
+moment = require 'moment'
+connectCoffeeScript = require 'connect-coffee-script'
 
 HOME_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/home.md"
 ABOUT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/about.md"
 CONTACT_URL = "https://raw.github.com/aditibhatia/portfolio-content/master/contact.md"
 
+logger =
+	log: (message) => console.log moment().format('YYYY-MM-DD HH:mm:ss ZZ') + " " + message
+	error: (message) => console.error chalk.red moment().format('YYYY-MM-DD HH:mm:ss ZZ') + " " + message
+
 version = "unknown"
 gitsha = require 'gitsha'
 gitsha __dirname, (error, output) ->
 	if not error then version = output
-	util.log "[#{process.pid}] env: #{process.env.NODE_ENV.magenta}, version: #{output.magenta}"
+	logger.log "[#{process.pid}] env: #{chalk.magenta process.env.NODE_ENV}, version: #{chalk.magenta version}"
 
-app = express.createServer()
+app = express()
+app.use favicon __dirname + '/public/img/icon.png'
+app.use morgan(if debug then 'dev' else 'tiny')
+app.use connectCoffeeScript
+	src: __dirname + '/client'
+	dest: __dirname + '/public'
+	bare: true
+app.use stylus.middleware
+	src: __dirname + '/views'
+	dest: __dirname + '/public'
+app.use express.static __dirname + '/public'
 
-app.set 'views', __dirname + '/views'
-app.set 'view options', layout: false
-
-app.configure 'production', ->
+if not debug
 	app.use (req, res, next) ->
-		if not res.getHeader 'Cache-Control'
-			maxAge = 86400 # seconds in one day
-			res.setHeader 'Cache-Control', 'public, max-age=' + maxAge
+		res.setHeader 'Cache-Control', 'public, max-age=' + 86400 # seconds in one day
 		next()
+	app.set 'trust proxy', 'loopback'
 
-app.configure ->
-	app.use express.responseTime()
-	app.use coffeescript
-		src: __dirname + '/client'
-		dest: __dirname + '/public'
-		bare: true
-	app.use stylus.middleware
-		src: __dirname + '/views'
-		dest: __dirname + '/public'
-	app.use express.static __dirname + '/public'
+if debug
+	app.locals.pretty = true
+
 
 app.get '/', (req, res) ->
-	promise = Promise.all getHtml(HOME_URL), getHtml(ABOUT_URL), getHtml(CONTACT_URL)
-	promise.then (values) ->
-		res.render 'index.jade',
+	Promise
+	.all [getHtml(HOME_URL), getHtml(ABOUT_URL), getHtml(CONTACT_URL)]
+	.then (values) ->
+		res.render 'index.pug',
 			version: version
 			devMode: debug
 			content:
 				home: values[0]
 				about: values[1]
 				contact: values[2]
+	.catch (err) ->
+		logger.error "Unable to render: #{err}"
 
 getHtml = (url) ->
-	promise = Promise (resolve, reject) ->
+	new Promise (resolve, reject) ->
 		if cache.get url
 			return resolve cache.get url
 
-		util.log "Cache miss. Fetching: #{url}"
+		logger.log "Cache miss. Fetching: #{url}"
 		request url, (err, resp, body) ->
 			if not err and resp.statusCode is 200
 				safeConverter = pagedown.getSanitizingConverter()
 				html = safeConverter.makeHtml body
-				util.log resp.headers['status'] + " - " + resp.headers['etag']
+				logger.log "status: #{resp.statusCode}, length: #{resp.headers['content-length']}, #{url}"
 				cache.put url, html, 86400000
 			else
 				html = '<em>An unexpected error has occured.</em>'
-				console.error "HTTP #{resp.statusCode}, Error:", err
+				logger.error "HTTP #{resp.statusCode}, Error: #{err}"
 				cache.put url, html, 10000
 			resolve(html)
 
-app.listen process.env.PORT or 0, ->
-	addr = app.address().address
-	port = app.address().port
-	util.log "[#{process.pid}] http://#{addr}:#{port}/"
+server = app.listen process.env.PORT or 0, ->
+	serverInfo = server.address()
+	if serverInfo.family is 'IPv6' then serverInfo.address = "[#{serverInfo.address}]"
+	logger.log "[#{process.pid}] http://#{serverInfo.address}:#{serverInfo.port}/"
 
 exit = (signal) ->
-	util.log "[#{process.pid}] Caught #{signal}; closing server connections."
-	app.close()
+	logger.log "[#{process.pid}] Caught #{signal}; closing server connections."
+	server.close()
 
 process.on 'SIGINT', ->
 	exit('SIGINT')

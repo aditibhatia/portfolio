@@ -1,4 +1,4 @@
-FROM node:6.2
+FROM node:lts
 MAINTAINER Aaditya Bhatia <aadityabhatia@gmail.com>
 
 RUN npm i -g coffee-script
