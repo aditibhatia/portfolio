@@ -7,7 +7,7 @@ html
 		link(href='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css', rel='stylesheet', type='text/css')
 		link(href='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-thumbs.css', rel='stylesheet', type='text/css')
 		link(href="/global.css?" + version, rel='stylesheet', type='text/css')
-		link(rel='icon' href="/img/icon.png")
+		link(rel='icon' href="/img/icon.png?" + version)
 
 		link(href='//fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css')
 
@@ -51,7 +51,7 @@ html
 					div !{content.home}
 					#homeButton
 						a.navButton(data-section="portfolio")
-							img(src="/img/portfolio-button.png")
+							img(src="/img/portfolio-button.png?" + version)
 
 			.row.navSection#about
 				.col-lg-1

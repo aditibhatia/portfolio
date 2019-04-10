@@ -1,4 +1,4 @@
-process.env.NODE_ENV ?= 'dev'
+process.env.NODE_ENV ?= 'development'
 debug = process.env.NODE_ENV isnt 'production'
 
 chalk = require 'chalk'
@@ -29,7 +29,7 @@ gitsha __dirname, (error, output) ->
 
 app = express()
 app.use favicon __dirname + '/public/img/icon.png'
-app.use morgan(if debug then 'dev' else 'tiny')
+app.use morgan(if debug then 'dev' else 'short')
 app.use connectCoffeeScript
 	src: __dirname + '/client'
 	dest: __dirname + '/public'
@@ -37,19 +37,15 @@ app.use connectCoffeeScript
 app.use stylus.middleware
 	src: __dirname + '/views'
 	dest: __dirname + '/public'
-app.use express.static __dirname + '/public'
+app.use express.static __dirname + '/public',
+	immutable: !debug
+	maxAge: if debug then 0 else '1y'
 
-if not debug
-	app.use (req, res, next) ->
-		res.setHeader 'Cache-Control', 'public, max-age=' + 86400 # seconds in one day
-		next()
-	app.set 'trust proxy', 'loopback'
-
-if debug
-	app.locals.pretty = true
-
+app.set 'trust proxy', 'loopback'
+app.locals.pretty = debug
 
 app.get '/', (req, res) ->
+	res.setHeader 'Cache-Control', 'public, max-age=' + 86400 # seconds in one day
 	Promise
 	.all [getHtml(HOME_URL), getHtml(ABOUT_URL), getHtml(CONTACT_URL)]
 	.then (values) ->
@@ -86,16 +82,8 @@ server = app.listen process.env.PORT or 0, ->
 	if serverInfo.family is 'IPv6' then serverInfo.address = "[#{serverInfo.address}]"
 	logger.log "[#{process.pid}] http://#{serverInfo.address}:#{serverInfo.port}/"
 
-exit = (signal) ->
-	logger.log "[#{process.pid}] Caught #{signal}; closing server connections."
-	server.close()
-
-process.on 'SIGINT', ->
-	exit('SIGINT')
-	setTimeout((-> process.exit(128+2)), 1000)
-
-process.on 'SIGTERM', ->
-	exit('SIGTERM')
-	setTimeout((-> process.exit(128+15)), 500)
+process.on 'SIGINT', (signal) ->
+	logger.log "[#{process.pid}] Caught signal: #{signal}; closing server connections."
+	server.close process.exit
 
 module.exports = app
