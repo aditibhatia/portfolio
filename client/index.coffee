@@ -1,7 +1,4 @@
-API_KEY = "AIzaSyBqmMVDizmBFhmiQwEblDkpEu-4nQAMHNY"
-TABLE = "1aj96ZD5RpRDWKlO4r2rmaWfabTK7efaUG4zrdMA"
-QUERY = encodeURIComponent "select * from #{TABLE}"
-TABLE_URL = "https://www.googleapis.com/fusiontables/v1/query?key=#{API_KEY}&sql=#{QUERY}"
+DATA_URL = "/data.json"
 
 $ ->
 	$(document).on 'click', 'a', (e) ->
@@ -15,7 +12,7 @@ $ ->
 
 	$('.btnTop').hide()
 
-	$.getJSON TABLE_URL, (data) ->
+	$.getJSON DATA_URL, (data) ->
 
 		console.log "Data:", data
 
