@@ -11,19 +11,19 @@
   "description": "portfolio of aditi the great",
   "dependencies": {
     "chalk": "^2.4.2",
-    "coffeescript": "^2.3.2",
+    "coffeescript": "^2.4.1",
     "connect-coffee-script": "^0.2.1",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "git-pull": "^0.1.0",
     "gitsha": "^0.1.0",
     "memory-cache": "^0.2.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "pagedown": "^1.1.0",
-    "pug": "^2.0.3",
+    "pug": "^2.0.4",
     "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.7"
   },
   "engines": {
     "node": "v0.10.x"
