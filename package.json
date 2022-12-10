@@ -13,7 +13,7 @@
     "chalk": "^2.4.2",
     "coffeescript": "^2.4.1",
     "connect-coffee-script": "^0.2.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "git-pull": "^0.1.0",
     "gitsha": "^0.1.0",
     "memory-cache": "^0.2.0",
